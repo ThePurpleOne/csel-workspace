@@ -9,11 +9,14 @@ static char* text = "dummy text";
 module_param(text, charp, 0664);
 static int  elements = 1;
 module_param(elements, int, 0);
+static int  param = 67;
+module_param(param, int, 0);
 
 static int __init skeleton_init(void)
 {
 	pr_info ("Linux module 01 skeleton loaded\n");
 	pr_debug ("  text: %s\n  elements: %d\n", text, elements);
+	pr_debug ("  param: %d\n\n", param);
 	return 0;
 }
 
