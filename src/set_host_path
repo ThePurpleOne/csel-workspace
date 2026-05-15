@@ -1,5 +1,5 @@
-export PATH := /buildroot/output/host/usr/sbin$\
-	:/buildroot/output/host/usr/bin/$\
-	:/buildroot/output/host/sbin$\
-	:/buildroot/output/host/bin/$\
-	:$(PATH)
+export PATH="/buildroot/output/host/usr/sbin:\
+/buildroot/output/host/usr/bin:\
+/buildroot/output/host/sbin:\
+/buildroot/output/host/bin:\
+$PATH"
