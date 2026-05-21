@@ -10,9 +10,9 @@ int main (void)
 
     for (k = 0; k < 10; k++)
     {
-        for (i = 0; i < SIZE; i++)
+        for (j = 0; j < SIZE; j++)
         {
-            for (j = 0; j < SIZE; j++)
+            for (i = 0; i < SIZE; i++)
             {
                 array[j][i]++;
             }
