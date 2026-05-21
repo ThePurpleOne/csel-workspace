@@ -87,3 +87,58 @@ GiB Swap:  0.0/0.0      [          ]
    11 root      20   0    0.0m   0.0m   0.0   0.0   0:00.00 S  `- [rcu_tasks_k+ 
 
 ```
+
+
+# Exercice 1 
+
+Check the running processes 
+
+```
+# ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0   2688   272 ?        Ss   00:00   0:01 init
+...
+root       286  0.0  0.0      0     0 ?        I    01:25   0:00 [kworker/u8:1-e
+root       287  0.0  0.0      0     0 ?        I    01:30   0:00 [kworker/u8:2-e
+root       290  0.0  0.0   1868   196 ttyS0    S+   01:32   0:00 ./exercice01
+root       291  0.0  0.0   1868    80 ttyS0    S+   01:32   0:00 ./exercice01
+root       292  1.8  1.0   6548  4976 ?        Ss   01:32   0:00 sshd: root@pts/
+root       294  0.2  0.3   2688  1724 pts/0    Ss   01:32   0:00 -sh
+root       298  0.0  0.0   2724   348 pts/0    R+   01:33   0:00 ps aux
+
+```
+
+```
+# ./exercice01 
+signal 15 received, ignoring
+signal 15 received, ignoring
+signal 2 received, ignoring
+signal 2 received, ignoring
+Hello World
+[parent] received: Hello World
+asd
+[parent] received: asd
+asd
+[parent] received: asd
+as
+[parent] received: as
+d
+[parent] received: d
+exit
+[parent] received: exit
+# 
+
+```
+
+to send a signal to a process : 
+
+```
+# ps aux | grep exer
+root       352  0.0  0.0   1736   200 ttyS0    S+   01:43   0:00 ./exercice01
+root       353  0.0  0.0   1736    84 ttyS0    S+   01:43   0:00 ./exercice01
+root       355  0.0  0.0   2688   320 pts/0    S+   01:43   0:00 grep exer
+# kill -SIGTERM 352
+# kill -SIGTERM 353
+# kill -SIGINT 353
+# kill -SIGINT 352
+```
