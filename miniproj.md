@@ -1,4 +1,6 @@
-# Module 
+# Module
+
+Module noyau (`fanctl.ko`) qui expose un sysfs `/sys/class/fanctl/fanctl/` avec trois attributs : `mode` (auto/manual), `frequency` (1..20 Hz, R/W), `temperature` (millidegrés, RO). Un `timer_list` fait clignoter la Status LED (GPIO10) à la fréquence configurée. Un `delayed_work` lit la zone thermique `cpu-thermal` chaque seconde ; en mode auto, applique les seuils `<35->2`, `<40->5`, `<45->10`, `≥45->20` Hz.
 
 ```
 # ls -la /sys/class/fanctl/fanctl/
@@ -29,6 +31,13 @@ sh: write error: Invalid argument
 
 # DAEMON
 
+Daemon userspace lancé en foreground par un script init. Architecture en 5 modules autour d'une boucle `epoll` :
+- `buttons` : lit S1/S2/S3 (GPIO 0/2/3) via sysfs + `EPOLLPRI`, pilote la LED Power
+- `comm` : serveur TCP port 1337, protocole texte ligne (`MODE`, `FREQ`, `STATUS`, `QUIT`), multi-clients avec buffer pour reads partiels.
+- `oled_view` : rendu OLED via I2C-0 (driver `ssd1306`), avec skip si l'affichage est inchangé.
+- `fanctl_sysfs` : R/W des attributs du module noyau.
+- `daemon.c` : orchestration, `timerfd` de rafraîchissement OLED (500 ms).
+
 ```
 # cat /var/log/messages 
 Jan  1 00:13:20 csel daemon.info fanctl-daemon[306]: starting
@@ -44,6 +53,9 @@ Jan  1 00:13:31 csel daemon.info fanctl-daemon[306]: K1: freq=10 (manual)
 ```
 
 # CLI
+
+Client TCP minimal : prend une commande en `argv`, l'envoie au daemon sur `127.0.0.1:1337`, affiche la réponse et retourne 0 (succès) ou 1 (`ERR`).
+
 ```
 # ./fanctl-cli STATUS
 mode=auto freq=10 temp=42445
