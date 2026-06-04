@@ -5,3 +5,8 @@
 / {
         /delete-node/ leds;
 };
+
+
+&i2c0 {
+        status = "okay";
+};
