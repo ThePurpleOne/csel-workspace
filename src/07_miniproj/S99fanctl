@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Start the fanctl daemon.
+# Install as /etc/init.d/S99fanctl on the target.
+#
+
+case "$1" in
+    start)
+        /opt/fanctl-daemon &
+        ;;
+    stop)
+        killall fanctl-daemon
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit 0
